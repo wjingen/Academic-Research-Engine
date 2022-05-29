@@ -17,7 +17,6 @@ The site offers many additional features, such as:
  The relevant files for the backend is located under: 
 ```
 backend/backend/ 
-backend/research/ 
 ```
 The relevant files for the frontend is located under:
 ```
@@ -29,35 +28,9 @@ frontend/src/styles
 
 # 🚀 Quick Start 
 
-## Windows
-
-Create Virtual Environment
-```
-python3 -m venv venv
-venv\Scripts\activate
-```
-
-Start Backend
-```zsh
-cd backend 
-pip3 install -r requirements.txt ## Install python dependencies
-python3 manage.py makemigrations 
-python3 manage.py migrate ## Set up django db models
-python3 manage.py runserver 8000 ## Start up backend server on port 8000
-```
-
-Start Frontend
-```zsh
-### Make sure you have Node >= 14.0.0 and npm >= 5.6 on your machine
-npm init ## Install Node Dependencies
-npm start ## Start up front end server
-```
-
-## Mac
-
 Create virtual environment
 ```zsh
-cd heron
+cd pilot
 python3 -m venv venv
 source venv/bin/activate 
 ```
@@ -73,6 +46,6 @@ python3 manage.py runserver 8000 ## Start up backend server on port 8000
 Start up frontend
 ```zsh
 ### Make sure you have Node >= 14.0.0 and npm >= 5.6 on your machine
-npm init ## Install Node Dependencies
+npm install ## Install Node Dependencies
 npm start ## Start up front end server
 ```

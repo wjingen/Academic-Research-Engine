@@ -1,8 +1,6 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import axiosInstance from '../../components/auth/apientrypoints'
-import {useNavigate} from 'react-router-dom'
-
-import Heron from '../../static/Heron.png'
+import { useNavigate } from 'react-router-dom'
 
 import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid'
@@ -34,10 +32,10 @@ export default function SignIn() {
       })
       .then(res => {
         history('/main')
-        localStorage.setItem('heron_access_token', res.data.access)
-        localStorage.setItem('heron_refresh_token', res.data.refresh) // Get the refresh and access token
+        localStorage.setItem('pilot_access_token', res.data.access)
+        localStorage.setItem('pilot_refresh_token', res.data.refresh) // Get the refresh and access token
         axiosInstance.defaults.headers['Authorization'] =
-          'JWT ' + localStorage.getItem('heron_access_token')
+          'JWT ' + localStorage.getItem('pilot_access_token')
       })
   }
 
@@ -45,7 +43,6 @@ export default function SignIn() {
     <Grid container spacing={0} direction="column" alignItems="center">
       <Grid container className={authStyles.main}>
         <Grid container spacing={0} direction="column" alignItems="center">
-          <img alt="" src={Heron} className={authStyles.heronimg} />
         </Grid>
 
         <Grid
@@ -82,7 +79,7 @@ export default function SignIn() {
               fullWidth
               variant="contained"
               color="primary"
-              style={{backgroundColor: 'black', width: '25%'}}
+              style={{ backgroundColor: 'black', width: '25%' }}
               onClick={handleSubmit}>
               Sign In
             </Button>

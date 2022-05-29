@@ -6,8 +6,8 @@ const VerifiedAxiosInstance = axios.create({
   baseURL: BASE_URL,
   timeout: 5000,
   headers: {
-    Authorization: `Bearer ${localStorage.getItem('heron_access_token')}`,
-    'x-access-token': `${localStorage.getItem('heron_access_token')}`
+    Authorization: `Bearer ${localStorage.getItem('pilot_access_token')}`,
+    'x-access-token': `${localStorage.getItem('pilot_access_token')}`
   }
 })
 export default VerifiedAxiosInstance

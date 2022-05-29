@@ -49,11 +49,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users',
-    'research',
     'backend',
     'rest_framework',
     'corsheaders',
-    # 'django_celery_beat',
     'rest_framework_simplejwt',
     # 'rest_framework_simplejwt.token_blacklist',
 ]
