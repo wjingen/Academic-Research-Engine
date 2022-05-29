@@ -16,13 +16,13 @@ function App() {
   return (
     <Router forceRefresh={true}>
       <Routes>
-        <Route path="/login" element={<Login/>} />
-        <Route path="/logout" element={<Logout/>} />
-        <Route exact path="/main" element={
+        <Route path="/login" element={<Login />} />
+        <Route path="/logout" element={<Logout />} />
+        <Route exact path="/" element={
           <PrivateRoute>
-            <Main/>  
+            <Main />
           </PrivateRoute>
-          } />
+        } />
       </Routes>
     </Router>
   )
