@@ -44,7 +44,6 @@ packages/react-devtools-timeline/dist
 __pycache__/
 *.py[cod]
 *$py.class
-
 # C extensions
 *.so
 

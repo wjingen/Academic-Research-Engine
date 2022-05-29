@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class ResearchConfig(AppConfig):
+class AuthflowConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'research'
+    name = 'users'
