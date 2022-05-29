@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid'
 
+import ProjectLogo from '../../static/projectlogo.png'
 import authStyles from '../../styles/auth/auth.module.css'
 
 export default function SignIn() {
@@ -43,6 +44,12 @@ export default function SignIn() {
     <Grid container spacing={0} direction="column" alignItems="center">
       <Grid container className={authStyles.main}>
         <Grid container spacing={0} direction="column" alignItems="center">
+          <Grid container direction="column" alignItems="center">
+            <img src={ProjectLogo} alt="" style={{ width: '35vw' }} />
+          </Grid>
+          <Grid container direction="column" alignItems="center" style={{ color: "grey" }}>
+            <h1> Your one stop Acad Paper System. </h1>
+          </Grid>
         </Grid>
 
         <Grid
