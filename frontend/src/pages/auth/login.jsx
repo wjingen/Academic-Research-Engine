@@ -27,12 +27,12 @@ export default function SignIn() {
   const handleSubmit = e => {
     e.preventDefault()
     axiosInstance
-      .post(`token/`, {
-        user_name: formData.username,
+      .post("http://127.0.0.1:8000/api/token/",{
+      user_name: formData.username,
         password: formData.password
       })
       .then(res => {
-        history('/main')
+        history('/')
         localStorage.setItem('pilot_access_token', res.data.access)
         localStorage.setItem('pilot_refresh_token', res.data.refresh) // Get the refresh and access token
         axiosInstance.defaults.headers['Authorization'] =
