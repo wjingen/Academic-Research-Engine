@@ -14,7 +14,9 @@ pycodestyle==2.8.0
 PyJWT==2.4.0
 pymongo==3.12.3
 python-dateutil==2.8.2
+python-dotenv
 pytz==2022.1
+pymongo[srv]
 six==1.16.0
 sqlparse==0.2.4
 timedelta==2020.12.3
