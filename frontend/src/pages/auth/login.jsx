@@ -38,7 +38,16 @@ export default function SignIn() {
         axiosInstance.defaults.headers['Authorization'] =
           'JWT ' + localStorage.getItem('pilot_access_token')
       })
+      .catch(
+        function (error) {
+          if (error.response.status === 401) {
+              alert("Login Credentials are invalid. Check your username and password and try again.")
+          }
+        }
+      )
   }
+
+
 
   return (
     <Grid container spacing={0} direction="column" alignItems="center">
