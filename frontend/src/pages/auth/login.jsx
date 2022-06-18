@@ -9,7 +9,7 @@ import ProjectLogo from '../../static/projectlogo.png'
 import authStyles from '../../styles/auth/auth.module.css'
 
 export default function SignIn() {
-  const history = useNavigate()
+  const navigate = useNavigate()
   const initialFormData = Object.freeze({
     email: '',
     password: ''
@@ -24,6 +24,10 @@ export default function SignIn() {
     })
   }
 
+  const handleRegister = () => {
+    navigate('/register');
+  };
+
   const handleSubmit = e => {
     e.preventDefault()
     axiosInstance
@@ -32,7 +36,7 @@ export default function SignIn() {
         password: formData.password
       })
       .then(res => {
-        history('/')
+        navigate('/')
         localStorage.setItem('pilot_access_token', res.data.access)
         localStorage.setItem('pilot_refresh_token', res.data.refresh) // Get the refresh and access token
         axiosInstance.defaults.headers['Authorization'] =
@@ -89,15 +93,24 @@ export default function SignIn() {
               placeholder="Password: "
             />
           </Grid>
-          <Grid container spacing={0} direction="column" alignItems="center">
+          <Grid container spacing={0} direction="row" alignItems="center" justifyContent="center">
             <Button
               type="submit"
-              fullWidth
+              
               variant="contained"
               color="primary"
-              style={{ backgroundColor: 'black', width: '25%' }}
+              style={{ backgroundColor: 'primary', width: '15%'}}
               onClick={handleSubmit}>
               Sign In
+            </Button>
+            
+            <Button
+
+              variant="contained"
+              color="primary"
+              style={{ backgroundColor: '#FF007F', width: '15%' }}
+              onClick={handleRegister}>
+              Register
             </Button>
           </Grid>
         </Grid>
