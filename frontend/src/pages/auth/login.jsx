@@ -60,8 +60,8 @@ export default function SignIn() {
           <Grid container direction="column" alignItems="center">
             <img src={ProjectLogo} alt="" style={{ width: '35vw' }} />
           </Grid>
-          <Grid container direction="column" alignItems="center" style={{ color: "grey" }}>
-            <h1> Your one stop Acad Paper System. </h1>
+          <Grid container direction="column" alignItems="center" style={{ color: "black" }}>
+            <h1> Your One-Stop Acad Paper System. </h1>
           </Grid>
         </Grid>
 
