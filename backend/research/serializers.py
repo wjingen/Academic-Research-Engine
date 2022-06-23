@@ -5,5 +5,5 @@ from .models import ResearchArchive
 class ResearchArchiveSerializer(serializers.ModelSerializer):
     class Meta:
         model = ResearchArchive
-        fields = ['Title', 'Link', 'PubYear', 'TitleID', 'UserID',
-                  'DateAdded', 'Category', 'Abstract', 'Author', 'Citations']
+        fields = ['id', 'Title', 'TitleID', 'Link', 'PubYear', 'DateAdded',
+                  'Category', 'UserID', 'Abstract', 'Author', 'Citations']
