@@ -3,7 +3,7 @@ import './App.css'
 import Login from './pages/auth/login'
 import Logout from './pages/auth/logout'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
-import Main from "./pages/auth/Main"
+import Research from "./pages/researchmain"
 import useAuth from "./components/auth/useAuth"
 
 function App() {
@@ -20,7 +20,7 @@ function App() {
         <Route path="/logout" element={<Logout />} />
         <Route exact path="/" element={
           <PrivateRoute>
-            <Main />
+            <Research />
           </PrivateRoute>
         } />
       </Routes>
