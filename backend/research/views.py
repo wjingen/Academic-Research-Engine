@@ -9,7 +9,7 @@ import pandas as pd
 from bs4 import BeautifulSoup
 from scholarly import scholarly
 
-from research.utils import generate_urls, make_requests, try_map, clean_category
+from research.utils import make_requests, try_map, clean_category, generate_payloads
 from research.serializers import ResearchArchiveSerializer
 from research.models import ResearchArchive
 
@@ -28,9 +28,10 @@ def search_articles(request):
         page = request.query_params.get('page', "")
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        urls = generate_urls(
+        payloads = generate_payloads(
             num_articles=page, search_query=search_query, category=category)
-        async_result = loop.run_until_complete(make_requests(urls=urls))
+        async_result = loop.run_until_complete(
+            make_requests(payloads=payloads))
         loop.close()
         try:
             cleaned_results = itertools.chain.from_iterable(
@@ -42,7 +43,7 @@ def search_articles(request):
             cleaned_results = cleaned_results.T.to_json()
             return HttpResponse(cleaned_results)
         except Exception as e:
-            return None
+            return HttpResponse(e)
 
 
 @api_view(['GET', 'POST', 'DELETE'])

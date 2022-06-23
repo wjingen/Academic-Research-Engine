@@ -1,47 +1,54 @@
 import re
-import ast
 import asyncio
-import itertools
-import pandas as pd
 from aiohttp import ClientSession
+import requests
+import json
 
 
-async def fetch_html(url: str, session: ClientSession) -> tuple:
+async def fetch_html(payload: str, session: ClientSession) -> tuple:
+
+    base_url = "https://backend.constellate.org/search2/items/?"
     headers = {
-        "Authorization": "UUID 859b5333-89b3-420d-b80c-52fff0a5d861",
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.55 Safari/537.36"
+        'Authorization': 'UUID 74ff5b2e-0fef-4976-b840-9a048eba469a',
+        'content-type': 'application/json'
     }
+    response = requests.request(
+        "POST", base_url, headers=headers, data=payload)
 
-    try:
-        async with session.get(url, headers=headers, verify_ssl=False) as response:
-            try:
-                res = await response.text()
-                return res
-            except Exception as e:
-                print(e)
-
-    except Exception as e:
-        return None
+    return response.text
 
 
-async def make_requests(urls: set) -> None:
+async def make_requests(payloads: set) -> None:
     async with ClientSession() as session:
         tasks = []
-        for url in urls:
+        for payload in payloads:
             tasks.append(
-                fetch_html(url=url, session=session)
+                fetch_html(payload=payload, session=session)
             )
         results = await asyncio.gather(*tasks)
     return results
 
 
-def generate_urls(num_articles: int, search_query: str, start: int = 2000, end: int = 2021, _document_type: str = "article", category: str = ""):
-    urls = []
+def generate_payloads(num_articles: int, search_query: str, start: int = 2000, end: int = 2021, _document_type: str = "article", category: str = ""):
+    payloads = []
     search_query = "+".join(search_query.split(" "))
     for i in range(0, int(num_articles) + 1, 10):
-        urls.append(
-            f"https://backend.constellate.org/search2/items/?keyword={search_query}&provider=&start={start}&end={end}&publication_title=&language=English&doc_type={_document_type}&category={category}&full_text=false&publisher=&jstor_discipline=&from={str(i)}")
-    return urls
+        payload = json.dumps({
+            "keyword": search_query,
+            "provider": "",
+            "start": start,
+            "end": end,
+            "publication_title": "",
+            "language": "",
+            "doc_type": _document_type,
+            "category": category,
+            "full_text": False,
+            "publisher": "",
+            "jstor_discipline": "",
+            "from": i,
+        })
+        payloads.append(payload)
+    return payloads
 
 
 def try_map(x, key):

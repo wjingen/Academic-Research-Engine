@@ -1,5 +1,7 @@
+aiohttp
 asgiref==3.5.2
 autopep8==1.6.0
+BeautifulSoup4 
 Django==3.2.13
 django-cors-headers==3.12.0
 django-shortcuts==1.6
@@ -18,6 +20,7 @@ python-dotenv
 pytz==2022.1
 pymongo[srv]
 six==1.16.0
+scholarly
 sqlparse==0.2.4
 timedelta==2020.12.3
 toml==0.10.2
