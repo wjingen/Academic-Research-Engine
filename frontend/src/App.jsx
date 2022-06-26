@@ -4,7 +4,7 @@ import Login from './pages/auth/login'
 import Logout from './pages/auth/logout'
 import Register from './pages/auth/register'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
-import Main from "./pages/auth/Main"
+import Research from "./pages/researchmain"
 import useAuth from "./components/auth/useAuth"
 
 function App() {
@@ -22,7 +22,7 @@ function App() {
         <Route path="/register" element={<Register/>}/>
         <Route exact path="/" element={
           <PrivateRoute>
-            <Main />
+            <Research />
           </PrivateRoute>
         } />
       </Routes>

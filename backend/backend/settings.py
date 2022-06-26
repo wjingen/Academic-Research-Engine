@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users',
     'backend',
+    'research',
     'rest_framework',
     'corsheaders',
     # 'django_celery_beat',
@@ -62,6 +63,7 @@ CORS_ALLOW_HEADERS = [
     'accept',
     'accept-encoding',
     'authorization',
+    'Authorization',
     'content-type',
     'dnt',
     'origin',
@@ -70,6 +72,7 @@ CORS_ALLOW_HEADERS = [
     'x-access-token',
     'x-requested-with',
 ]
+
 CORS_ORIGIN_ALLOW_ALL = True
 
 MIDDLEWARE = [
@@ -104,21 +107,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'djongo',
-#         'NAME': 'backend',
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'backend',
+        'NAME': 'backend2',
         'ENFORCE_SCHEMA': False,
         'CLIENT': {
                 'host': os.environ["MONGODB_DATABASE_URL"]
@@ -143,7 +135,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 AUTH_USER_MODEL = "users.NewUser"
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -170,7 +162,7 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=6),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,
