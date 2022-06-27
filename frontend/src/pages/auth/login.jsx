@@ -33,7 +33,7 @@ export default function SignIn() {
   const handleSubmit = e => {
     e.preventDefault()
     axiosInstance
-      .post(BASEURL + "/api/token/", {
+      .post(BASEURL + "api/token/", {
         user_name: formData.username,
         password: formData.password
       })
