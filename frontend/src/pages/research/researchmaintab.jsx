@@ -13,6 +13,8 @@ import ArticleCard from '../../components/content/articlecard'
 import NoDataSkeleton from '../../components/skeleton/nodataskeleton'
 import ArticleCardSkeleton from '../../components/skeleton/articlecardskeleton';
 
+import { BASEURL } from '../../components/constants'
+
 import { sortArroObjs } from '../../functions/main'
 import { numberWithCommas, tickFormatter } from '../../functions/main'
 import researchStyles from '../../styles/research.module.css'
@@ -39,7 +41,7 @@ export default function ResearchMainTab() {
   try { var sortedcounts_ = lastviewed_data['sorted_counts'] } catch { var sortedcounts_ = undefined }
   try { var articlepreview_ = Object.values(lastviewed_data['articlepreview_']['data']) } catch { var articlepreview_ = undefined }
   try { var query_ = lastviewed_data['query'] } catch { var query_ = undefined }
-  
+
   const pastdata_available = [query_, sortedcounts_, articlepreview_, data_, groupedbarchartdata_, multilinechartdata_].includes(undefined)
 
   const [data, setData] = useState(data_ !== undefined ? data_ : new Object())
@@ -65,8 +67,8 @@ export default function ResearchMainTab() {
 
   let navigate = useNavigate();
   const handleLogout = () => {
-	  navigate("/logout");
-	}
+    navigate("/logout");
+  }
 
   function handlePaginate(value) {
     const maxpagevalue = Math.min(100, Math.max(0, Math.floor(data['num_results']['results'] / 10)))
@@ -77,7 +79,7 @@ export default function ResearchMainTab() {
       setArticleloading(true)
       setlargestPage(value)
       VerifiedAxiosInstance
-        .get('http://127.0.0.1:8000/api/research/research/', {
+        .get(BASEURL + '/api/research/research/', {
           params: {
             search_query: query,
             page: value * 10
@@ -167,8 +169,7 @@ export default function ResearchMainTab() {
                   </span>
                 }
               />
-            }
-            nodeId={i.toString()}>
+            }>
             {item[key]
               .sort((a, b) => (a.n > b.n ? -1 : b.n > a.n ? 1 : 0))
               .map((item, q) => (
@@ -232,7 +233,7 @@ export default function ResearchMainTab() {
     var search_category = propcategory !== null ? propcategory.join('%7C%7C') : selectedcategories.join('%7C%7C')
 
     const sitemetadata_ = 'https://backend.constellate.org/search2/?' +
-	  'keyword=' +
+      'keyword=' +
       search_query +
       '&provider=&start=' +
       start +
@@ -262,33 +263,33 @@ export default function ResearchMainTab() {
 
     var axios = require('axios');
     var data_to_send = JSON.stringify({
-        "keyword": search_query,
-        "provider": "",
-        "start": 1900,
-        "end": 2022,
-        "publication_title": "",
-        "language": "",
-        "doc_type": "",
-        "category": "",
-        "full_text": false,
-        "publisher": "",
-        "jstor_discipline": ""
+      "keyword": search_query,
+      "provider": "",
+      "start": 1900,
+      "end": 2022,
+      "publication_title": "",
+      "language": "",
+      "doc_type": "",
+      "category": "",
+      "full_text": false,
+      "publisher": "",
+      "jstor_discipline": ""
     });
 
-  console.log("UUID IS:" + process.env.REACT_APP_CONSTELLATE_ID)
-  var config = {
-    method: 'post',
-    url: 'https://backend.constellate.org/search2/',
-    headers: { 
-      'Authorization': "UUID 74ff5b2e-0fef-4976-b840-9a048eba469a",
-      'content-type': 'application/json',
-  },
-    data : data_to_send
-  };
+    console.log("UUID IS:" + process.env.REACT_APP_CONSTELLATE_ID)
+    var config = {
+      method: 'post',
+      url: 'https://backend.constellate.org/search2/',
+      headers: {
+        'Authorization': "UUID 74ff5b2e-0fef-4976-b840-9a048eba469a",
+        'content-type': 'application/json',
+      },
+      data: data_to_send
+    };
 
     if ([null, undefined].includes(metadatacache_)) {
-        sets1Loadingstate(true)
-        await axios(config)
+      sets1Loadingstate(true)
+      await axios(config)
         .then(response => {
           var cache = new Object()
 
@@ -313,14 +314,14 @@ export default function ResearchMainTab() {
           var sort_arr = sorted_counts.sort(sortArroObjs)
           sort_arr = Object.keys(sort_arr).map(key => Object.entries(sort_arr[key])[0][0])
           if (data['sub_articles'] !== undefined && data !== null) {
-              Object.keys(data['sub_articles']).map(key =>
-                arr.push({ [key]: data['sub_articles'][key] })
-              )
-              arr = arr.sort(function (x, y) {
-                var xkey = sort_arr.indexOf(Object.keys(x)[0])
-                var ykey = sort_arr.indexOf(Object.keys(y)[0])
-                return xkey - ykey
-              })
+            Object.keys(data['sub_articles']).map(key =>
+              arr.push({ [key]: data['sub_articles'][key] })
+            )
+            arr = arr.sort(function (x, y) {
+              var xkey = sort_arr.indexOf(Object.keys(x)[0])
+              var ykey = sort_arr.indexOf(Object.keys(y)[0])
+              return xkey - ykey
+            })
           }
           // Reassigns the sorted arr into the key value
           data['sub_articles'] = arr
@@ -330,7 +331,7 @@ export default function ResearchMainTab() {
           cache['sorted_counts'] = sorted_counts
           lvcache['sorted_counts'] = sorted_counts
           setAggregatedcounts(sorted_counts)
-          
+
           // ** Sorts the categorical articles in descending order **
           cache['data'] = data
           setData(data)
@@ -373,9 +374,9 @@ export default function ResearchMainTab() {
     writeToCache('lastviewed', lvcache)
     writeDataToCache(search_query, writecache)
     setLoading(false)
-    }
+  }
 
-   const SearchBox = (
+  const SearchBox = (
     <React.Fragment>
       <Grid container className={researchStyles.searchbox}>
         <Grid item xs={10}>
@@ -424,8 +425,8 @@ export default function ResearchMainTab() {
             </Grid>
           </Grid>
           <Grid item container xs={9} direction="row" justifyContent="flex-end" alignItems="flex-start" >
-			  <Button variant="contained" onClick={handleLogout}>Logout</Button>
-		  </Grid>
+            <Button variant="contained" onClick={handleLogout}>Logout</Button>
+          </Grid>
         </Grid>
         {/* Side Bar */}
         <Grid container>

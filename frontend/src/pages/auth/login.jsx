@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom'
 import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid'
 
+import { BASEURL } from '../../components/constants'
+
 import ProjectLogo from '../../static/projectlogo.png'
 import authStyles from '../../styles/auth/auth.module.css'
 
@@ -31,8 +33,8 @@ export default function SignIn() {
   const handleSubmit = e => {
     e.preventDefault()
     axiosInstance
-      .post("http://127.0.0.1:8000/api/token/",{
-      user_name: formData.username,
+      .post(BASEURL + "/api/token/", {
+        user_name: formData.username,
         password: formData.password
       })
       .then(res => {
@@ -45,7 +47,7 @@ export default function SignIn() {
       .catch(
         function (error) {
           if (error.response.status === 401) {
-              alert("Login Credentials are invalid. Check your username and password and try again.")
+            alert("Login Credentials are invalid. Check your username and password and try again.")
           }
         }
       )
@@ -96,14 +98,14 @@ export default function SignIn() {
           <Grid container spacing={0} direction="row" alignItems="center" justifyContent="center">
             <Button
               type="submit"
-              
+
               variant="contained"
               color="primary"
-              style={{ backgroundColor: 'primary', width: '15%'}}
+              style={{ backgroundColor: 'primary', width: '15%' }}
               onClick={handleSubmit}>
               Sign In
             </Button>
-            
+
             <Button
 
               variant="contained"

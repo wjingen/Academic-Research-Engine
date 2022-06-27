@@ -5,6 +5,7 @@ import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid'
 import ProjectLogo from '../../static/projectlogo.png'
 import authStyles from '../../styles/auth/auth.module.css'
+import { BASEURL } from '../../components/constants';
 
 export default function SignUp() {
 	const navigate = useNavigate();
@@ -33,12 +34,12 @@ export default function SignUp() {
 		console.log(formData);
 
 		axiosInstance
-			.post("http://localhost:8000/user/create/", 
-		{
-				email: formData.email,
-				user_name: formData.username,
-				password: formData.password,
-		}
+			.post(BASEURL + "/user/create/",
+				{
+					email: formData.email,
+					user_name: formData.username,
+					password: formData.password,
+				}
 			)
 			.then((res) => {
 				alert("Registered successfully. Redirecting to Login Page:")
@@ -59,77 +60,77 @@ export default function SignUp() {
 
 	return (
 		<Grid container spacing={0} direction="column" alignItems="center">
-		  <Grid container className={authStyles.main}>
-			<Grid container spacing={0} direction="column" alignItems="center">
-			  <Grid container direction="column" alignItems="center">
-				<img src={ProjectLogo} alt="" style={{ width: '35vw' }} />
-			  </Grid>
-			  <Grid container direction="column" alignItems="center" style={{ color: "black" }}>
-				<h1> Your One-Stop Acad Paper System. </h1>
-			  	<h3> Sign Up For A New Pilot Account. </h3>
-			  </Grid>
+			<Grid container className={authStyles.main}>
+				<Grid container spacing={0} direction="column" alignItems="center">
+					<Grid container direction="column" alignItems="center">
+						<img src={ProjectLogo} alt="" style={{ width: '35vw' }} />
+					</Grid>
+					<Grid container direction="column" alignItems="center" style={{ color: "black" }}>
+						<h1> Your One-Stop Acad Paper System. </h1>
+						<h3> Sign Up For A New Pilot Account. </h3>
+					</Grid>
+				</Grid>
+
+				<Grid
+					container
+					spacing={0}
+					direction="column"
+					alignItems="center"
+					className={authStyles.textfieldcontainer}>
+					<Grid container spacing={0} direction="column" alignItems="center">
+						<input
+							className={authStyles.textfield}
+							autoComplete="off"
+							type="email"
+							maxLength="30"
+							name="email"
+							onChange={handleChange}
+							placeholder="Email: "
+						/>
+					</Grid>
+					<Grid container spacing={0} direction="column" alignItems="center">
+						<input
+							className={authStyles.textfield}
+							autoComplete="off"
+							type="username"
+							maxLength="30"
+							name="username"
+							onChange={handleChange}
+							placeholder="Username: "
+						/>
+					</Grid>
+					<Grid container spacing={0} direction="column" alignItems="center">
+						<input
+							className={authStyles.textfield}
+							autoComplete="off"
+							type="password"
+							maxLength="30"
+							name="password"
+							onChange={handleChange}
+							placeholder="Password: "
+						/>
+					</Grid>
+					<Grid container spacing={0} direction="row" alignItems="center" justifyContent="center">
+						<Button
+							type="submit"
+
+							variant="contained"
+							color="primary"
+							style={{ backgroundColor: 'primary', width: '15%' }}
+							onClick={handleRegister}>
+							Register
+						</Button>
+						<Button
+
+							variant="contained"
+							color="primary"
+							style={{ backgroundColor: '#FF007F', width: '15%' }}
+							onClick={handleLogin}>
+							Back to Login
+						</Button>
+					</Grid>
+				</Grid>
 			</Grid>
-	
-			<Grid
-			  container
-			  spacing={0}
-			  direction="column"
-			  alignItems="center"
-			  className={authStyles.textfieldcontainer}>
-				<Grid container spacing={0} direction="column" alignItems="center">
-					<input
-					className={authStyles.textfield}
-					autoComplete="off"
-					type="email"
-					maxLength="30"
-					name="email"
-					onChange={handleChange}
-					placeholder="Email: "
-					/>
-				</Grid>
-				<Grid container spacing={0} direction="column" alignItems="center">
-					<input
-					className={authStyles.textfield}
-					autoComplete="off"
-					type="username"
-					maxLength="30"
-					name="username"
-					onChange={handleChange}
-					placeholder="Username: "
-					/>
-				</Grid>
-				<Grid container spacing={0} direction="column" alignItems="center">
-					<input
-					className={authStyles.textfield}
-					autoComplete="off"
-					type="password"
-					maxLength="30"
-					name="password"
-					onChange={handleChange}
-					placeholder="Password: "
-					/>
-				</Grid>
-			  <Grid container spacing={0} direction="row" alignItems="center" justifyContent="center">
-				<Button
-				  type="submit"
-				  
-				  variant="contained"
-				  color="primary"
-				  style={{ backgroundColor: 'primary', width: '15%'}}
-				  onClick={handleRegister}>
-				  Register
-				</Button>
-				<Button
-	
-				  variant="contained"
-				  color="primary"
-				  style={{ backgroundColor: '#FF007F', width: '15%' }}
-				  onClick={handleLogin}>
-				  Back to Login
-				</Button>
-			  </Grid>
-			</Grid>
-		  </Grid>
 		</Grid>
-	  )
+	)
 }
