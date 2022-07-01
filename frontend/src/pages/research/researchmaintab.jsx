@@ -281,7 +281,7 @@ export default function ResearchMainTab() {
       method: 'post',
       url: 'https://backend.constellate.org/search2/',
       headers: {
-        'Authorization': "UUID 74ff5b2e-0fef-4976-b840-9a048eba469a",
+        'Authorization': process.env.REACT_APP_CONSTELLATE_ID,
         'content-type': 'application/json',
       },
       data: data_to_send
@@ -338,6 +338,7 @@ export default function ResearchMainTab() {
           sets1Loadingstate(false)
           writecache[sitemetadata_] = cache
         })
+        .catch((error) => console.log("first error:" + error))
     } else {
       sets1Loadingstate(true)
       var cached_data = metadatacache_
