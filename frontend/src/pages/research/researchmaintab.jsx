@@ -14,6 +14,8 @@ import NoDataSkeleton from '../../components/skeleton/nodataskeleton'
 import ArticleCardSkeleton from '../../components/skeleton/articlecardskeleton';
 
 import { BASEURL } from '../../components/constants'
+import DocumentsOverTime from '../../components/pages/research/documentsovertime';
+import CategoricalBreakdown from '../../components/pages/research/categoricalbreakdown';
 
 import { sortArroObjs } from '../../functions/main'
 import { numberWithCommas, tickFormatter } from '../../functions/main'
@@ -45,6 +47,9 @@ export default function ResearchMainTab() {
   const pastdata_available = [query_, sortedcounts_, articlepreview_, data_, groupedbarchartdata_, multilinechartdata_].includes(undefined)
 
   const [data, setData] = useState(data_ !== undefined ? data_ : new Object())
+  const [multilinechartdata, setMultilinechartdata] = useState(multilinechartdata_ !== undefined ? multilinechartdata_ : null)
+  const [groupedbarchartdata, setGroupedbarchartdata] = useState(groupedbarchartdata_ !== undefined ? groupedbarchartdata_ : null)
+
   const [aggregatedcounts, setAggregatedcounts] = useState(sortedcounts_ !== undefined ? sortedcounts_ : null)
   // for Article preview
   const [articlepreview, setArticlepreview] = useState(articlepreview_ !== undefined ? articlepreview_ : null) // article previews
@@ -247,6 +252,20 @@ export default function ResearchMainTab() {
       search_category +
       '&full_text=false&publisher=&jstor_discipline='
 
+      const sitecatovertime_ = 'https://backend.constellate.org/search2/?keyword=' +
+      search_query +
+      '&provider=&start=' +
+      start +
+      '&end=' +
+      end +
+      '&publication_title=&language=' +
+      _language +
+      '&doc_type=' +
+      _document_type +
+      '&category=' +
+      search_category +
+      '&full_text=false&publisher=&jstor_discipline='
+
     const articlepreview_ = "research/research/" + query
 
     // Allow caching of previously retrieved data and checking if cache is available
@@ -255,7 +274,7 @@ export default function ResearchMainTab() {
     // just for now, set metadatacache_ to default null!
     // var metadatacache_ = cache_condition ? cached_data[sitemetadata_] : null
     var metadatacache_ = null
-
+    var catovertimecache_ = cache_condition ? cached_data[sitecatovertime_] : null
     var articlepreviewcache_ = cache_condition ? cached_data[articlepreview_] : null
     var lvcache = new Object() // Last viewed cache
     var writecache = new Object()
@@ -276,7 +295,6 @@ export default function ResearchMainTab() {
       "jstor_discipline": ""
     });
 
-    console.log("UUID IS:" + process.env.REACT_APP_CONSTELLATE_ID)
     var config = {
       method: 'post',
       url: 'https://backend.constellate.org/search2/',
@@ -347,6 +365,65 @@ export default function ResearchMainTab() {
       setData(cached_data.data)
       sets1Loadingstate(false)
     }
+
+
+
+
+
+
+    // Categorical Graphs
+    if ([null, undefined].includes(catovertimecache_)) {
+      sets2Loadingstate(true)
+      await axios(config)
+        .then(response => {
+          var cache = new Object()
+          // Data formatting for multi line chart
+          var category_by_year = response.data['by_year']
+          data['category_by_year'] = category_by_year
+          // Get the data in a format ready to push into recharts
+          try {
+            var cleaned_data = response.data["results"]["document_years"]
+            cache['multilinechartdata'] = cleaned_data
+            setMultilinechartdata(cleaned_data)
+          } catch (err) { 
+            console.log("Errored out at MultiLineChartData: " + err) 
+          }
+          // Data formatting for grouped bar chart
+          try {
+            var subarticle_list = []
+            var article_items = data['sub_articles']
+            article_items.map(item => {
+              var entry = new Object()
+              var key = Object.keys(item)[0]
+              entry['name'] = key
+              item[key].map(element => {
+                entry[element['sub']] = element['n']
+              })
+              subarticle_list.push(entry)
+            })
+            cache['groupedbarchartdata'] = subarticle_list
+            setGroupedbarchartdata(subarticle_list)
+          } catch (err) { 
+            console.log("Errored out at GroupedBarChartData: " + err) 
+          }
+
+          setData(data)
+          cache['data'] = data
+          lvcache['main'] = cache
+          sets2Loadingstate(false)
+          // Write to cache
+          writecache[sitecatovertime_] = cache
+        })
+    } else {
+      sets2Loadingstate(true)
+      var cached_data = catovertimecache_
+      lvcache['main'] = cached_data
+      setMultilinechartdata(cached_data['multilinechartdata'])
+      setGroupedbarchartdata(cached_data['groupedbarchartdata'])
+      setData(cached_data['data'])
+      sets2Loadingstate(false)
+    }
+    // End of Categorical Graphs
 
     // Call to backend
     if ([null, undefined].includes(articlepreviewcache_)) {
@@ -550,6 +627,25 @@ export default function ResearchMainTab() {
               </Grid>
             ) : null}
           </Grid>
+          {/* Mid Section */}
+          {/* End Section - Charting */}
+          <Grid item xs={5} style={{ paddingRight: '1%' }}>
+            <DocumentsOverTime
+              loading={loading}
+              startstate={startstate}
+              width={'100%'}
+              height={"100%"}
+              multilinechartdata={multilinechartdata}
+            />
+            <CategoricalBreakdown
+              loading={loading}
+              startstate={startstate}
+              width={'100%'}
+              height={700}
+              groupedbarchartdata={groupedbarchartdata}
+            />
+          </Grid>
+          {/* End Section - Charting */}
         </Grid>
       </Grid>
     </React.Fragment >
