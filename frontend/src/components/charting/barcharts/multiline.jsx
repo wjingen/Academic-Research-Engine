@@ -57,13 +57,7 @@ export default function MultiLineChart(props) {
     }
     return res
   }
-
-  // console.log("percentage type is:" + percentagetype)
-  // console.log("percentage data is:")
-  // console.log(JSON.stringify(handleData(data)))
-
-  console.log("data is:" + JSON.stringify(data))
-
+  
   return (   
     <React.Fragment>
       {data !== null && data !== undefined && data.length !== 0 ?
@@ -87,7 +81,7 @@ export default function MultiLineChart(props) {
               wrapperStyle={{ fontSize: '0.9vw' }}
               />
             <Legend />
-            <Bar dataKey="Documents Created" fill="#8884d8" />
+            <Bar dataKey="Documents Created" fill="#0645AD" />
         </BarChart>
       </ResponsiveContainer>
       :
@@ -95,35 +89,4 @@ export default function MultiLineChart(props) {
 
     </React.Fragment>       
   )
-  // return (
-  //   <React.Fragment>
-  //     {data !== null && data !== undefined && data.length !== 0 ?
-  //       (Object.entries(data).map(item => item['value']).reduce((a, b) => a + b) !== 0 ?
-  //         <ResponsiveContainer width={width} height={height}>
-  //           <BarChart data={data}>
-  //             <XAxis
-  //               dataKey={xaxisname}
-  //               style={axisstyle}
-  //               interval={interval}
-  //               padding={{ right: 15, left: 10 }}
-  //             />
-  //             <YAxis style={axisstyle} style={axisstyle} padding={{ top: 5 }} />
-  //             <Tooltip
-  //               formatter={value => (percentagetype ? value + '%' : value)}
-  //               wrapperStyle={{ fontSize: '0.9vw' }}
-  //             />
-  //             {Object.keys(data).length > 2 ? <Legend wrapperStyle={{ fontSize: '0.8vw' }} /> : null}
-  //             {/* {keylist !== null
-  //               ? keylist.map((key, i) => (
-  //                 <Line key={i} type="monotone" dataKey={key} stroke={[undefined, null].includes(color) ? colorpalette[i] : color} dot={dot} />
-  //               ))
-  //               : keylist} */}
-  //           </BarChart>
-  //         </ResponsiveContainer> :
-  //         <NoDataSkeleton />
-  //       ) : (
-  //         <NoDataSkeleton />
-  //       )}
-  //   </React.Fragment>
-  // )
 }

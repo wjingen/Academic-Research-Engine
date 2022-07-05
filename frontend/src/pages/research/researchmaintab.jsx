@@ -634,7 +634,7 @@ export default function ResearchMainTab() {
               loading={loading}
               startstate={startstate}
               width={'100%'}
-              height={"100%"}
+              height={500}
               multilinechartdata={multilinechartdata}
             />
             <CategoricalBreakdown
@@ -649,5 +649,5 @@ export default function ResearchMainTab() {
         </Grid>
       </Grid>
     </React.Fragment >
-  )
+  ) 
 }

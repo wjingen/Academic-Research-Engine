@@ -7,7 +7,7 @@ import Button from '@mui/material/Button'
 import Skeleton from '@mui/material/Skeleton';
 
 import researchStyles from '../../../styles/research.module.css'
-import MultiLineChart from '../../charting/linecharts/multiline'
+import MultiLineChart from '../../charting/barcharts/multiline'
 
 export default function DocumentsOverTime(props) {
   const [percentagetype, setPercentagetype] = useState(false) // true means percentage selection is true
