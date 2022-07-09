@@ -14,6 +14,8 @@ export default function SignUp() {
     })
     localStorage.removeItem('pilot_access_token')
     localStorage.removeItem('pilot_refresh_token')
+    sessionStorage.clear()
+    console.log("Cleared session storage.")
     axiosInstance.defaults.headers['Authorization'] = null
     setTimeout(() => {
       history('/login')

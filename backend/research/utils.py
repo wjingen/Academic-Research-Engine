@@ -3,13 +3,16 @@ import asyncio
 from aiohttp import ClientSession
 import requests
 import json
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 
 async def fetch_html(payload: str, session: ClientSession) -> tuple:
 
     base_url = "https://backend.constellate.org/search2/items/?"
     headers = {
-        'Authorization': 'UUID 74ff5b2e-0fef-4976-b840-9a048eba469a',
+        'Authorization': os.environ['REACT_APP_CONSTELLATE_ID'],
         'content-type': 'application/json'
     }
     response = requests.request(
