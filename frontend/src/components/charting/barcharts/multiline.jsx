@@ -50,14 +50,19 @@ export default function MultiLineChart(props) {
       // Calculate absolute values
       Object.entries(data).map(([key, value]) => {
         var entry = {}
-        entry["Year"] = key
+        entry[xaxisname] = key
         entry["Documents Created"] = value
         res.push(entry)
       })
     }
-    return res
+    console.log("res is:" + JSON.stringify(res))
+    // return res
+    return res.slice(21)
   }
-  
+
+  console.log("Inside multiline chart data!")
+  // console.log("handleData(data) is:" + JSON.stringify(handleData(data)))
+
   return (   
     <React.Fragment>
       {data !== null && data !== undefined && data.length !== 0 ?
