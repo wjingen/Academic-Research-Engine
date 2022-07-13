@@ -72,21 +72,13 @@ export default function ResearchArchive(props) {
         setCategorylist(barchartdata.map(item => item['name']))
 
         var linechartdata = []
-        // Establish date range to todays date minus 28 days
-        var daterange = getDates(new Date(new Date().setDate(new Date().getDate() - 28)), new Date()).map(item => item.toISOString().split('T')[0])
-        Object.entries(countArrOcurrences(data.map(el => el['DateAdded'].split("T")[0]))).map((el) => daterange.includes(el[0]) 
-		// Object.entries(countArrOcurrences(data.map(el => el['DateAdded'].split(",")[0].split("/").reverse().join("-")))).map((el) => daterange.includes(el[0]) 
+        // Establish date range to todays date minus 7 days
+        var daterange = getDates(new Date(new Date().setDate(new Date().getDate() - 7)), new Date()).map(item => item.toISOString().split('T')[0])
+        Object.entries(countArrOcurrences(data.map(el => el['DateAdded'].split("T")[0]))).map((el) => daterange.includes(el[0])  
 			? linechartdata.push({ date: el[0], value: el[1] }) 
 			: null)
-        var availdates = linechartdata.map(item => item['date']) // The dates we have logged 
+        var availdates = linechartdata.map(item => item['date']) 
         daterange.map(item => !availdates.includes(item) ? linechartdata.push({ date: item, value: 0 }) : null)
-
-		// console.log('data is:' + JSON.stringify(data))
-		// console.log(Object.entries(countArrOcurrences(data.map(el => el['DateAdded'].split("T")[0]))).map((el) => console.log("el[0] is:" + el[0])))
-		// console.log("daterange is:" + JSON.stringify(daterange))
-		// console.log("availdates is:" + JSON.stringify(availdates))
-		// console.log("linechartdata is:" + JSON.stringify(linechartdata))
-
         linechartdata.sort(function (a, b) { // sort according to yyyy-mm-dd string
           // Turn strings into dates, and then subtract them to get a value that is either negative, positive, or zero.
           return new Date(a.date) - new Date(b.date)
@@ -142,7 +134,7 @@ export default function ResearchArchive(props) {
           style={{ fontSize: '1.3vw', color: 'grey', paddingBottom: '0.5%' }}>
           <Grid item xs={4}>
             {![undefined, null].includes(savedarticles) ? savedarticles.length : null}{' '}
-            saved queries
+            Saved Queries
           </Grid>
           <Grid item xs={6} style={{ marginLeft: '10%', fontSize: '1vw' }}>
             {![undefined, null].includes(savedarticles) ? (
@@ -180,7 +172,7 @@ export default function ResearchArchive(props) {
                   color: 'grey'
                 }}>
                   <Grid item xs={12} style={{ paddingBottom: '1%' }}>
-                    Saved Queries over time
+                    Saved Queries Over Time
                   </Grid>
                 </Grid>
                 <Grid container>
