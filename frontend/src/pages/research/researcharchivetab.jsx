@@ -111,7 +111,7 @@ export default function ResearchArchive(props) {
                 author={item.Author}
                 category={item.Category}
                 publishdate={item.PubYear}
-                pubhouse={'Date Added: ' + item.DateAdded}
+                pubhouse={'Date Added: ' + item.DateAdded.split("T")[0]}
                 url={item.Link}
                 added={true}
               />
