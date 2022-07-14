@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react"
 	
 import articlecardStyles from '../../styles/components/articlecard.module.css'
 import {toAuthorString, toMonthName} from "../../functions/main"
+import { style } from "@mui/system"
 
 export default function Citation(props) {
 
@@ -20,8 +21,6 @@ export default function Citation(props) {
 	const year_accessed = new Date().getFullYear()
 	const month_accessed = new Date().getMonth() + 1
 	const day_accessed =  new Date().getDate() 
-
-	console.log("publihs date is:" + publish_date)
 
 	const [open, setOpen] = useState(false);
 	const [citationMethod, setCitationMethod] = useState("apa")
@@ -51,7 +50,7 @@ export default function Citation(props) {
 	useEffect(() => {
 	  setTimeout(() => {
 		setCopied(false)
-	  }, 1500);
+	  }, 2000);
 	}, [copied]);
   
   
@@ -68,26 +67,28 @@ export default function Citation(props) {
 	  } 
 	}, [citationMethod])
 
-
 	return (
 		<Grid container>
 		<button className={articlecardStyles.readmorebuttonStyle} onClick={handleClickOpen}>
 				Cite
 		</button>
 			<Dialog open={open} onClose={handleClose}>
-			<DialogTitle style={{ fontSize: '0.9vw', fontWeight: 'bold', color: 'black' }}>
-			Citation Helper
+			<DialogTitle style={{ fontSize: '2vw', fontWeight: 'bold', color: 'black' }}>
+			Citation Tool
 			</DialogTitle>
-			<DialogContent style={{padding:"30px"}}>
+			<DialogContent style={{padding:"30px"}} >
 			<DialogContentText>
-				<FormControl label="Citation">
-				<InputLabel>
+				<FormControl label="Citation" >
+				<InputLabel sx={{fontWeight: "bold"}}>
 					Citation Style
 				</InputLabel>
 				<Select 
 					value={citationMethod} 
 					onChange={handleCitationMethod} 
 					label="Citation Style"
+					sx={{
+						fontWeight: "bold"
+					}}
 				>
 					<MenuItem value={"apa"}>American Psychology Association (APA)</MenuItem>
 					<MenuItem value={"mla"}>Modern Language Association (MLA)</MenuItem>
@@ -105,7 +106,17 @@ export default function Citation(props) {
 				defaultValue=""
 				value={citationResult}
 				multiline
-				style = {{"width":"500px"}}
+				sx={{width: "100%"}}
+				InputProps={{
+					style: {
+						fontWeight: "bold",
+					}
+				}}
+				InputLabelProps={{
+					style: {
+						fontWeight: "bold"
+					}
+				}}
 				/>
 			</DialogContent>
 			<DialogActions  style={{"paddingBottom": "10px"}}>
@@ -116,24 +127,21 @@ export default function Citation(props) {
 				componentsProps={{
 				tooltip: {
 					sx: {
-					color: "black",
-					backgroundColor: "white",
-					fontSize: "20px",
-					fontFamily: "roboto",
-					fontWeight: "normal",
-					borderRadius: "5px",
-					border : "0.16em solid #dfdfdf",
-					padding: "7px",
-					alignItems: "center"
+					color: "white",
+					backgroundColor: "grey",
+					fontSize: 18,
+					padding: "10px"
 					}
 				}
 				}}
 				>
-				<Button variant="outlined" onClick={handleCopy}>
+				<Button variant="outlined" onClick={handleCopy} style={{ fontWeight: 'bold', color: 'black', borderColor: 'black' }}>
 				Copy to Clipboard
 				</Button>
 			</Tooltip>
-			<Button variant="outlined" onClick={handleClose}>Exit</Button>
+			<Button variant="outlined" onClick={handleClose} style={{ fontWeight: 'bold', color: 'black', borderColor: 'black' }}>
+				Exit
+			</Button>
 			</DialogActions>
 		</Dialog>
 		</Grid>

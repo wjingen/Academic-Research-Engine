@@ -197,7 +197,7 @@ export default function ArticleCard(props) {
               </Grid>
             </Grid>
 
-            <Grid>
+            <Grid paddingBottom={1}>
               <Citation
                 title={title}
                 publisher={pub_house}
@@ -205,7 +205,6 @@ export default function ArticleCard(props) {
                 url={url}
                 publish_date={publish_date}
               />
-
             </Grid>
 
             <Grid container>
