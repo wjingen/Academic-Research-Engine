@@ -64,5 +64,33 @@ function countArrOcurrences(a) {
   return result
 }
 
-export { tickFormatter, numberWithCommas, sortObject, sortArroObjs, generateStringID, countArrOcurrences, getDates }
+// Convert array: [{"family":"Neill","given":"Ushma S."}, {"family": "Vaugh", "given": "Max"}] into 
+// formatted string "Neill, U. & Vaugh, M."
+function toAuthorString(authors) {
+	var result = ""
+	for (let i = 0; i < authors.length; i++) {
+		var family = authors[i]["family"]
+		var given = authors[i]["given"]
+		var givenFirst = given[0]
+		if (i == authors.length - 1) {
+			result += `${family}, ${givenFirst}.`
+		} else if (i == authors.length - 2) {
+			result += `${family}, ${givenFirst}. & `
+		} else {
+		result += `${family}, ${givenFirst}., `
+		}
+	}
+	return result
+}
+
+// Convert month from numeric to string
+function toMonthName(monthNumber) {
+	const date = new Date();
+	date.setMonth(monthNumber - 1);
+	return date.toLocaleString('en-US', {
+	  month: 'long',
+	});
+}
+
+export { tickFormatter, numberWithCommas, sortObject, sortArroObjs, generateStringID, countArrOcurrences, getDates, toAuthorString, toMonthName }
 

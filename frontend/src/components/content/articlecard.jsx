@@ -5,6 +5,7 @@ import ArticleCardSkeleton from '../skeleton/articlecardskeleton'
 import articlecardStyles from '../../styles/components/articlecard.module.css'
 import VerifiedAxiosInstance from '../auth/authenticatedentrypoint'
 import { generateStringID } from '../../functions/main'
+import Citation from "./citation"
 
 import Grid from '@mui/material/Grid'
 import CircularProgress from '@mui/material/CircularProgress';
@@ -194,6 +195,17 @@ export default function ArticleCard(props) {
                   {selected ? 'Remove from Archives' : 'Add to Archives'}
                 </button>
               </Grid>
+            </Grid>
+
+            <Grid>
+              <Citation
+                title={title}
+                publisher={pub_house}
+                authors={author}
+                url={url}
+                publish_date={publish_date}
+              />
+
             </Grid>
 
             <Grid container>
