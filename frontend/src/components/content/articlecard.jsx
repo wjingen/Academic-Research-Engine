@@ -201,7 +201,6 @@ export default function ArticleCard(props) {
               <Citation
                 title={title}
                 publisher={pub_house}
-                authors={author}
                 url={url}
                 publish_date={publish_date}
               />

@@ -5,38 +5,67 @@ import React, { useState, useEffect } from "react"
 	
 import articlecardStyles from '../../styles/components/articlecard.module.css'
 import {toAuthorString, toMonthName} from "../../functions/main"
-import { style } from "@mui/system"
+import VerifiedAxiosInstance from '../auth/authenticatedentrypoint'
+import LoadingSpinner from "../skeleton/LoadingSpinner"
 
 export default function Citation(props) {
-
-	const title = props.title
-	// const titleShort = props.titleShort 
-	const publisher = props.publisher 
-	const authors = props.authors 
-	const url = props.url
-	const publish_date = props.publish_date
-	// const year_issued = props.year_issued 
-	// const month_issued = props.month_issued 
-	// const day_issued = props.day_issued 
-	const year_accessed = new Date().getFullYear()
-	const month_accessed = new Date().getMonth() + 1
-	const day_accessed =  new Date().getDate() 
 
 	const [open, setOpen] = useState(false);
 	const [citationMethod, setCitationMethod] = useState("apa")
 	const [citationResult, setCitationResult] = useState("")
 	const [copied, setCopied] = useState(false)
+
+	const [gscholardata, setGscholardata] = useState({})
+	const [gscholarload, setGscholarload] = useState(false)
+
+	const title = props.title
+	const publisher = props.publisher 
+	const url = props.url
+	const publish_date = props.publish_date
+	const year_accessed = new Date().getFullYear()
+	const month_accessed = new Date().getMonth() + 1
+	const day_accessed =  new Date().getDate()
+
+	const authors = Object.keys(gscholardata).length !== 0 ? gscholardata['author'].join(" | ") : null
+
+	console.log("publisher is: " + publisher)
+	console.log("authors is: " + authors)
+	console.log("url is: " + url)
+	console.log("publish_date is: " + publish_date)
+	console.log("year_accessed is: " + year_accessed)
+	console.log("month_accessed is: " + month_accessed)
+	console.log("day_accessed is: " + day_accessed)
+
   
-	const handleClickOpen = () => {
-	  setOpen(true);
-	};
+	const handleClickOpen = async (e) => {
+		setOpen(true);
+		setGscholarload(true)
+		await VerifiedAxiosInstance.get('research/researchgscholar/', {
+			params: {
+			query: title,
+			}
+		}).then(
+			response => {
+			var gscholar_dat = response.data
+			gscholar_dat['title'] = title
+			setGscholardata(gscholar_dat)
+			}
+		).catch(
+			err => {
+			console.log("Returned error code of " + err)
+			}
+		)
+		setGscholarload(false)
+		console.log("getting g scholar data")
+		}
+
   
 	const handleClose = () => {
 	  setOpen(false);
 	};
   
 	const handleCitationMethod = (event) => {
-		  setCitationMethod(event.target.value);
+		setCitationMethod(event.target.value);
 	}
   
 	const handleCopy = () => {
@@ -72,10 +101,20 @@ export default function Citation(props) {
 		<button className={articlecardStyles.readmorebuttonStyle} onClick={handleClickOpen}>
 				Cite
 		</button>
+			
+		<Grid> 
 			<Dialog open={open} onClose={handleClose}>
 			<DialogTitle style={{ fontSize: '2vw', fontWeight: 'bold', color: 'black' }}>
 			Citation Tool
 			</DialogTitle>
+			
+			{gscholarload 
+			?
+			<Grid container justifyContent="center" padding={15}> 
+				<LoadingSpinner/>	
+			</Grid>
+			:	
+			
 			<DialogContent style={{padding:"30px"}} >
 			<DialogContentText>
 				<FormControl label="Citation" >
@@ -119,8 +158,10 @@ export default function Citation(props) {
 				}}
 				/>
 			</DialogContent>
+			}
+
 			<DialogActions  style={{"paddingBottom": "10px"}}>
-			
+		
 			<Tooltip
 				open={copied}
 				title={"Copied to clipboard!"}
@@ -144,6 +185,10 @@ export default function Citation(props) {
 			</Button>
 			</DialogActions>
 		</Dialog>
+
+		</Grid> 
+
+
 		</Grid>
 	)
 }
