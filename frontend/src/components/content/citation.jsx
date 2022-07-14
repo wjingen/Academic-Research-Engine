@@ -1,6 +1,7 @@
 import {FormControl, InputLabel, Select, MenuItem, Grid, Tooltip, Button, 
 	TextField, Dialog, DialogActions, DialogContent, DialogContentText, 
 	DialogTitle} from "@mui/material"
+import LoadingButton from '@mui/lab/LoadingButton';
 import React, { useState, useEffect } from "react"
 	
 import articlecardStyles from '../../styles/components/articlecard.module.css'
@@ -176,9 +177,14 @@ export default function Citation(props) {
 				}
 				}}
 				>
-				<Button variant="outlined" onClick={handleCopy} style={{ fontWeight: 'bold', color: 'black', borderColor: 'black' }}>
+				<LoadingButton 
+					variant="outlined" 
+					onClick={handleCopy} 
+					loading={gscholarload}
+					style={{fontWeight: 'bold', color: 'black', borderColor: 'black' }}
+					>
 				Copy to Clipboard
-				</Button>
+				</LoadingButton>
 			</Tooltip>
 			<Button variant="outlined" onClick={handleClose} style={{ fontWeight: 'bold', color: 'black', borderColor: 'black' }}>
 				Exit
