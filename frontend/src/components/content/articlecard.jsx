@@ -200,9 +200,6 @@ export default function ArticleCard(props) {
             <Grid paddingBottom={1}>
               <Citation
                 title={title}
-                publisher={pub_house}
-                url={url}
-                publish_date={publish_date}
               />
             </Grid>
 
@@ -231,7 +228,7 @@ export default function ArticleCard(props) {
                     <Grid container style={{ paddingTop: '1%', fontWeight: 'bold' }}> Abstract </Grid>
                     <Grid container style={{ paddingTop: '1%', fontWeight: 'normal', paddingLeft: '0.5%' }}> {abstract} </Grid>
                   </Grid> : <Grid container>
-                    {console.log("empty container")}
+                    {/* {console.log("empty container")} */}
                   </Grid>
                 )
               }

@@ -138,3 +138,42 @@ def get_gscholar_info(request):
 
     except:
         return JsonResponse()
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_gscholar_citation(request):
+    try:
+        query = request.GET.get("query")
+        # Part 1: Obtain ID of Search
+        query_url = "https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=" + query + "&oq="
+        payload = {}
+        headers = {
+            'Cookie': "SID=LggX35UM6Z6rPjwFDfPP-jC3OCDh98YAmcfEbf8Uc2MltzyWxh0pjSjVZqP538Zeod74QQ.; __Secure-1PSID=LggX35UM6Z6rPjwFDfPP-jC3OCDh98YAmcfEbf8Uc2MltzyWzTPhBpY28GazvYpkP1HZ3w.; HSID=AUKkl17oH02mhwd30; SSID=AHpH3ld9R2kHqm8dZ; APISID=X57n0QyuhSqEeEEf/Af4lmm2pHSqsjP4HA; SAPISID=16T5yqC62Iwib5uj/AeF37FZB2VU2DEk_i; __Secure-1PAPISID=16T5yqC62Iwib5uj/AeF37FZB2VU2DEk_i; SEARCH_SAMESITE=CgQI7ZUB; AEC=AakniGOlnn08UmvYZePRs-5I_XlR12wXxUxhyFLDimoCzHCHcGyTeJDxX14; __Secure-3PSID=LggX35UM6Z6rPjwFDfPP-jC3OCDh98YAmcfEbf8Uc2MltzyWyPCAcGnQwGWfOYrcaRJ-fg.; __Secure-3PAPISID=16T5yqC62Iwib5uj/AeF37FZB2VU2DEk_i; NID=511=ictP7XhIiGz2QEDOy9FcTCUWOVvPIv8tWmyNYOuSmzGrHfE_PljHbzAH-jDl2pB7h5Nq733SbSLz1cXGuRM0Vvv5VcB_FFnZbj2U6lYzdJBwgdxeizgZRu6gJHKYFUFYs7iGA7nP0tvXXjna6yByXsM2xzVzO1HnODV49fxbI6-0GLNFvf7QsfKngNktXjtmUNaOzbWotdvK0mrFYpY4Sbmc_0J5jahZbSsEBDjNjnOLKyHgpg; 1P_JAR=2022-07-14-18; GSP=A=MLNFJg:CPTS=1657822983:LM=1657822983:S=OczBNWWw4lM4gR3D; SIDCC=AJi4QfHB_z98IBD5gPefxXOLBv7uvr1J_nx3Cz6qhJAgpVpWWUAVUyjKx5vUwkuQRHeyTurQFSIo; __Secure-1PSIDCC=AJi4QfFqEceYFOj5cftZQj6Q588p19gVBENxr0PtK6nCMqroh1VowDqJzXvy46wlPE_fovcXE8g; __Secure-3PSIDCC=AJi4QfGFFGWOEq4stJbUr-eqRDonbKwPXuSyWfqHAQWtDLQ_Bi_OkpT37M9-RGGOraqVPG3tU4E"
+        }
+
+        response = requests.request(
+            "GET", query_url, headers=headers, data=payload)
+        html_soup = BeautifulSoup(response.text, 'lxml')
+        id_tag_1 = html_soup.find_all(id='gs_res_ccl_mid')[0]
+        id_tag_2 = id_tag_1.find(class_="gs_r gs_or gs_scl")
+        id = id_tag_2["data-aid"]
+
+        # Part 2: Scrape Results
+        results_url = "https://scholar.google.com/scholar?q=info:" + \
+            id + ":scholar.google.com/&output=cite&scirp=0&hl=en"
+
+        payload = {}
+
+        response = requests.request(
+            "GET", results_url, headers=headers, data=payload)
+        html_soup = BeautifulSoup(response.text, 'lxml')
+        table_tag = html_soup.find_all("table")
+        citationResults = {}
+        for div in table_tag[0]:
+            method = div.find(class_="gs_cith").text
+            result = div.find(class_="gs_citr").text
+            citationResults[method] = result
+        return JsonResponse(citationResults)
+    except:
+        return JsonResponse({"status": "fail"}, status=403)

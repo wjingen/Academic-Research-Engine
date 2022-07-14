@@ -5,65 +5,42 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import React, { useState, useEffect } from "react"
 	
 import articlecardStyles from '../../styles/components/articlecard.module.css'
-import {toAuthorString, toMonthName} from "../../functions/main"
 import VerifiedAxiosInstance from '../auth/authenticatedentrypoint'
 import LoadingSpinner from "../skeleton/LoadingSpinner"
 
 export default function Citation(props) {
 
 	const [open, setOpen] = useState(false);
-	const [citationMethod, setCitationMethod] = useState("apa")
+	const [citationMethod, setCitationMethod] = useState("APA")
 	const [citationResult, setCitationResult] = useState("")
 	const [copied, setCopied] = useState(false)
 
-	const [gscholardata, setGscholardata] = useState({})
 	const [gscholarload, setGscholarload] = useState(false)
-
+	const [citations, setCitations] = useState({})
+	const [failed, setFailed] = useState(false)
 	const title = props.title
-	const publisher = props.publisher 
-	const url = props.url
-	const publish_date = props.publish_date
-	const year_accessed = new Date().getFullYear()
-	const month_accessed = new Date().getMonth() + 1
-	const day_accessed =  new Date().getDate()
-
-	const authors = Object.keys(gscholardata).length !== 0 ? gscholardata['author'].join(" | ") : null
-
-	console.log("publisher is: " + publisher)
-	console.log("authors is: " + authors)
-	console.log("url is: " + url)
-	console.log("publish_date is: " + publish_date)
-	console.log("year_accessed is: " + year_accessed)
-	console.log("month_accessed is: " + month_accessed)
-	console.log("day_accessed is: " + day_accessed)
-
   
 	const handleClickOpen = async (e) => {
 		setOpen(true);
 		setGscholarload(true)
-		await VerifiedAxiosInstance.get('research/researchgscholar/', {
+		await VerifiedAxiosInstance.get('research/citationgscholar/', {
 			params: {
 			query: title,
 			}
 		}).then(
 			response => {
-			var gscholar_dat = response.data
-			gscholar_dat['title'] = title
-			setGscholardata(gscholar_dat)
+				var data = response.data
+				setCitations(data)
 			}
 		).catch(
 			err => {
 			console.log("Returned error code of " + err)
+			setFailed(true)
 			}
 		)
 		setGscholarload(false)
-		console.log("getting g scholar data")
-		}
+	}
 
-		// Start of Webscrape
-		// End of Webscrape
-
-  
 	const handleClose = () => {
 	  setOpen(false);
 	};
@@ -89,16 +66,8 @@ export default function Citation(props) {
   
 	// useEffect to update citation based on method
 	useEffect(() => {
-	  if (citationMethod === "apa") {
-		// var result = `${toAuthorString(authors)} (${year_issued}, ${toMonthName(month_issued)} ${day_issued}).${title}. ${titleShort}. Retrieved ${toMonthName(month_accessed)} ${day_accessed}, ${year_accessed}, from ${url}.`
-		var result = `${authors} (${publish_date}). ${title}. Retrieved ${toMonthName(month_accessed)} ${day_accessed}, ${year_accessed}, from ${url}.`
-		setCitationResult(result)
-	  } else if (citationMethod === "mla") {
-		setCitationResult("mla!") 
-	  } else if (citationMethod === "harvard") {
-		setCitationResult("harvard!") 
-	  } 
-	}, [citationMethod])
+		setCitationResult(citations[citationMethod])
+	}, [citationMethod, citations, failed])
 
 	return (
 		<Grid container>
@@ -114,11 +83,19 @@ export default function Citation(props) {
 			
 			{gscholarload 
 			?
+			//  Loading Spinner
 			<Grid container justifyContent="center" padding={15}> 
 				<LoadingSpinner/>	
 			</Grid>
 			:	
-			
+			failed
+			?
+			// If failed = true
+			<Grid padding={5}>
+				Unable to obtain citation results.
+			</Grid>
+			:
+			// If failed = false
 			<DialogContent style={{padding:"30px"}} >
 			<DialogContentText>
 				<FormControl label="Citation" >
@@ -133,9 +110,11 @@ export default function Citation(props) {
 						fontWeight: "bold"
 					}}
 				>
-					<MenuItem value={"apa"}>American Psychology Association (APA)</MenuItem>
-					<MenuItem value={"mla"}>Modern Language Association (MLA)</MenuItem>
-					<MenuItem value={"harvard"}>Harvard</MenuItem>
+					<MenuItem value={"APA"}>American Psychology Association (APA)</MenuItem>
+					<MenuItem value={"MLA"}>Modern Language Association (MLA)</MenuItem>
+					<MenuItem value={"Chicago"}>Chicago</MenuItem>
+					<MenuItem value={"Harvard"}>Harvard</MenuItem>
+					<MenuItem value={"Vancouver"}>Vancouver</MenuItem>
 				</Select>
 				</FormControl>
 			</DialogContentText>
@@ -143,13 +122,12 @@ export default function Citation(props) {
 				autoFocus
 				margin="dense"
 				id="name"
-				label="Citation Output"
 				type="email"
 				variant="standard"
 				defaultValue=""
 				value={citationResult}
 				multiline
-				sx={{width: "100%"}}
+				sx={{width: "100%", minWidth: "400px", paddingTop: 2}}
 				InputProps={{
 					style: {
 						fontWeight: "bold",
