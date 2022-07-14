@@ -60,9 +60,6 @@ export default function Citation(props) {
 		console.log("getting g scholar data")
 		}
 
-		// Start of Webscrape
-		// End of Webscrape
-
   
 	const handleClose = () => {
 	  setOpen(false);
