@@ -17,6 +17,9 @@ from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import JSONParser
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 
 @api_view(['GET'])
@@ -149,9 +152,8 @@ def get_gscholar_citation(request):
         query_url = "https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=" + query + "&oq="
         payload = {}
         headers = {
-            'Cookie': "SID=LggX35UM6Z6rPjwFDfPP-jC3OCDh98YAmcfEbf8Uc2MltzyWxh0pjSjVZqP538Zeod74QQ.; __Secure-1PSID=LggX35UM6Z6rPjwFDfPP-jC3OCDh98YAmcfEbf8Uc2MltzyWzTPhBpY28GazvYpkP1HZ3w.; HSID=AUKkl17oH02mhwd30; SSID=AHpH3ld9R2kHqm8dZ; APISID=X57n0QyuhSqEeEEf/Af4lmm2pHSqsjP4HA; SAPISID=16T5yqC62Iwib5uj/AeF37FZB2VU2DEk_i; __Secure-1PAPISID=16T5yqC62Iwib5uj/AeF37FZB2VU2DEk_i; SEARCH_SAMESITE=CgQI7ZUB; AEC=AakniGOlnn08UmvYZePRs-5I_XlR12wXxUxhyFLDimoCzHCHcGyTeJDxX14; __Secure-3PSID=LggX35UM6Z6rPjwFDfPP-jC3OCDh98YAmcfEbf8Uc2MltzyWyPCAcGnQwGWfOYrcaRJ-fg.; __Secure-3PAPISID=16T5yqC62Iwib5uj/AeF37FZB2VU2DEk_i; NID=511=ictP7XhIiGz2QEDOy9FcTCUWOVvPIv8tWmyNYOuSmzGrHfE_PljHbzAH-jDl2pB7h5Nq733SbSLz1cXGuRM0Vvv5VcB_FFnZbj2U6lYzdJBwgdxeizgZRu6gJHKYFUFYs7iGA7nP0tvXXjna6yByXsM2xzVzO1HnODV49fxbI6-0GLNFvf7QsfKngNktXjtmUNaOzbWotdvK0mrFYpY4Sbmc_0J5jahZbSsEBDjNjnOLKyHgpg; 1P_JAR=2022-07-14-18; GSP=A=MLNFJg:CPTS=1657822983:LM=1657822983:S=OczBNWWw4lM4gR3D; SIDCC=AJi4QfHB_z98IBD5gPefxXOLBv7uvr1J_nx3Cz6qhJAgpVpWWUAVUyjKx5vUwkuQRHeyTurQFSIo; __Secure-1PSIDCC=AJi4QfFqEceYFOj5cftZQj6Q588p19gVBENxr0PtK6nCMqroh1VowDqJzXvy46wlPE_fovcXE8g; __Secure-3PSIDCC=AJi4QfGFFGWOEq4stJbUr-eqRDonbKwPXuSyWfqHAQWtDLQ_Bi_OkpT37M9-RGGOraqVPG3tU4E"
+            'Cookie': os.environ['GSCHOLAR_COOKIE']
         }
-
         response = requests.request(
             "GET", query_url, headers=headers, data=payload)
         html_soup = BeautifulSoup(response.text, 'lxml')
