@@ -1,7 +1,6 @@
 import React from 'react'
 import NoDataSkeleton from '../../skeleton/nodataskeleton'
-import { Legend, LineChart, BarChart, Line, Tooltip, XAxis, YAxis, ResponsiveContainer, CartesianGrid, Bar } from 'recharts'
-import colorpalette from '../../../functions/colors'
+import { Legend, BarChart, Tooltip, XAxis, YAxis, ResponsiveContainer, CartesianGrid, Bar } from 'recharts'
 
 export default function MultiLineChart(props) {
   // data : (13) [{...}, {...}, {...}, {...}, ..., {...}]
@@ -18,17 +17,6 @@ export default function MultiLineChart(props) {
       : false
   const data = props.data
 
-  const keylist =
-    data !== null && data !== undefined && data.length !== 0
-      ? Object.keys(data).filter(function (e) {
-        return e !== xaxisname
-      })
-      : null
-
-  const axisstyle = {
-    fontSize: '0.8vw'
-  }
-
   const handleData = (data) => {
     var res = []
     if (percentagetype) {
@@ -42,7 +30,7 @@ export default function MultiLineChart(props) {
       Object.entries(data).map(([key, value]) => {
         var entry = {}
         var pct = Math.round((value / totalDocuments) * 100 * 100) / 100
-        entry["Year"] = key
+        entry[xaxisname] = key
         entry["Documents Created"] = pct
         res.push(entry)
       })
@@ -50,14 +38,14 @@ export default function MultiLineChart(props) {
       // Calculate absolute values
       Object.entries(data).map(([key, value]) => {
         var entry = {}
-        entry["Year"] = key
+        entry[xaxisname] = key
         entry["Documents Created"] = value
         res.push(entry)
       })
     }
     return res
   }
-  
+
   return (   
     <React.Fragment>
       {data !== null && data !== undefined && data.length !== 0 ?
@@ -75,6 +63,7 @@ export default function MultiLineChart(props) {
               padding={{ top: 20 }} 
               type="number"
               tickFormatter={value => (percentagetype ? value + '%' : value)}
+              interval={1}
               />
             <Tooltip
               formatter={value => (percentagetype ? value + '%' : value)}

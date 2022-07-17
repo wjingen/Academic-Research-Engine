@@ -34,7 +34,7 @@ export default function ArticleCard(props) {
   const author = props.author
 
   // Get the user for user specific database storage
-  var access_token = localStorage.getItem('heron_access_token')
+  var access_token = localStorage.getItem('pilot_access_token')
   const user_id =
     access_token === null ? null : JSON.parse(atob(access_token.split('.')[1]))['user_id']
 
@@ -89,7 +89,8 @@ export default function ArticleCard(props) {
         Title: title,
         Link: url,
         PubYear: publish_date,
-        DateAdded: new Date().toLocaleString(),
+        // DateAdded: new Date().toLocaleString(),
+        DateAdded: new Date().toISOString(),
         TitleID: uid,
         Category: category,
         UserID: user_id,
@@ -221,7 +222,7 @@ export default function ArticleCard(props) {
                     <Grid container style={{ paddingTop: '1%', fontWeight: 'bold' }}> Abstract </Grid>
                     <Grid container style={{ paddingTop: '1%', fontWeight: 'normal', paddingLeft: '0.5%' }}> {abstract} </Grid>
                   </Grid> : <Grid container>
-                    {console.log("empty container")}
+                    {/* {console.log("empty container")} */}
                   </Grid>
                 )
               }
