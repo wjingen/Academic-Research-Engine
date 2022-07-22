@@ -17,6 +17,9 @@ from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import JSONParser
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 
 @api_view(['GET'])
@@ -138,3 +141,41 @@ def get_gscholar_info(request):
 
     except:
         return JsonResponse()
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_gscholar_citation(request):
+    try:
+        query = request.GET.get("query")
+        # Part 1: Obtain ID of Search
+        query_url = "https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=" + query + "&oq="
+        payload = {}
+        headers = {
+            'Cookie': os.environ['GSCHOLAR_COOKIE']
+        }
+        response = requests.request(
+            "GET", query_url, headers=headers, data=payload)
+        html_soup = BeautifulSoup(response.text, 'lxml')
+        id_tag_1 = html_soup.find_all(id='gs_res_ccl_mid')[0]
+        id_tag_2 = id_tag_1.find(class_="gs_r gs_or gs_scl")
+        id = id_tag_2["data-aid"]
+
+        # Part 2: Scrape Results
+        results_url = "https://scholar.google.com/scholar?q=info:" + \
+            id + ":scholar.google.com/&output=cite&scirp=0&hl=en"
+
+        payload = {}
+
+        response = requests.request(
+            "GET", results_url, headers=headers, data=payload)
+        html_soup = BeautifulSoup(response.text, 'lxml')
+        table_tag = html_soup.find_all("table")
+        citationResults = {}
+        for div in table_tag[0]:
+            method = div.find(class_="gs_cith").text
+            result = div.find(class_="gs_citr").text
+            citationResults[method] = result
+        return JsonResponse(citationResults)
+    except:
+        return JsonResponse({"status": "fail"}, status=403)

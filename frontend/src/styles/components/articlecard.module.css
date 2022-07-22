@@ -60,6 +60,7 @@
   background-color: transparent;
   font-size: 0.8vw;
   color: grey;
+  text-decoration: underline;
 }
 
 .readmorebuttonStyle:hover {
