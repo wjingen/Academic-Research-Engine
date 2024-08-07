@@ -1,3 +1,8 @@
+### View video showcase [here](https://vimeo.com/995710839?share=copy).
+
+![image](https://github.com/user-attachments/assets/697a629e-338f-4fc5-b213-9a7e75176c08)
+
+
 # Project Pilot  🛫
 
 ### What is Project Pilot?
